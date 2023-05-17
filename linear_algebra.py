@@ -1,6 +1,6 @@
 import numpy as np
 
-def Gauss_elimination(A, b=None, return_b=False, pivot=False):
+def Gauss_elimination(A, b=None, return_b=False, pivot=False, back_substitution=False):
     n, m = A.shape
     if not return_b:
         b = np.array([0]*m)
@@ -14,7 +14,7 @@ def Gauss_elimination(A, b=None, return_b=False, pivot=False):
         A[j] = temp
         temp = np.copy(b[i])
         b[i] = b[j]
-        b[j] = b[i]
+        b[j] = temp
     
     i = 0
     j = 0
@@ -36,7 +36,18 @@ def Gauss_elimination(A, b=None, return_b=False, pivot=False):
                 b[k] = b[k] - b[i]*a
             i += 1
             j += 1
-    
+
+    A_org = np.capy(A)
+    if back_substitution:
+        for j in reversed(range(1, m)):
+            for i in range(j-1):
+                if A[j,j] == 0: 
+                    print("Matrix is not diagonalizable.")
+                    return A_org
+                a = A[i,j]/A[j,j]
+                A[i,j] = 0
+                b[i] = b[i] - b[j]*a
+
     if return_b:
         return A, b
     return A
