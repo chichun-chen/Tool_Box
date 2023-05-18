@@ -37,7 +37,7 @@ def Gauss_elimination(A, b=None, return_b=False, pivot=False, back_substitution=
             i += 1
             j += 1
 
-    A_org = np.capy(A)
+    A_org = np.copy(A)
     if back_substitution:
         for j in reversed(range(1, m)):
             for i in range(j-1):
